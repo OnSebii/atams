@@ -21,7 +21,10 @@ export default {
   name: 'App',
 
   data: () => ({
-    //
+    updateAvailable: null,
   }),
+  created() {
+    document.addEventListener('swUpdated', this.updateAvailable, { once: true });
+  },
 };
 </script>
