@@ -39,9 +39,19 @@ export default {
 
   data: () => ({
     updateAvailable: null,
+    offline: null,
   }),
   created() {
+    window.addEventListener('online', () => (this.offline = false));
+    window.addEventListener('offline', () => (this.offline = true));
     document.addEventListener('swUpdated', this.updateAvailable, { once: true });
+  },
+  methods: {
+    updateAvailable() {
+      if (confirm(`New content is available!. Click OK to refresh`)) {
+        window.location.reload();
+      }
+    },
   },
 };
 </script>
