@@ -1,0 +1,14 @@
+<template>
+  <div>
+    <h1>Trips</h1>
+  </div>
+</template>
+<script>
+export default {
+  name: 'Trips',
+
+  data: () => ({}),
+  created() {},
+  methods: {},
+};
+</script>
