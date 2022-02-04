@@ -3,6 +3,7 @@ import App from './App.vue';
 import './registerServiceWorker';
 import router from './router';
 import vuetify from './plugins/vuetify';
+import VueGeolocation from 'vue-browser-geolocation';
 
 Vue.config.productionTip = false;
 
@@ -11,3 +12,5 @@ new Vue({
   vuetify,
   render: (h) => h(App),
 }).$mount('#app');
+
+Vue.use(VueGeolocation);

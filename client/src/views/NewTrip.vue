@@ -8,7 +8,21 @@
 <script>
 export default {
   name: 'NewTrip',
-
-  components: {},
+  data() {
+    return {};
+  },
+  props: {},
+  created() {
+    this.$getLocation({
+      enableHighAccuracy: false, //defaults to false
+      timeout: Infinity, //defaults to Infinity
+      maximumAge: 0, //defaults to 0
+    }).then((coordinates) => {
+      console.log(coordinates);
+    });
+  },
+  methods: {
+    getLocation() {},
+  },
 };
 </script>
