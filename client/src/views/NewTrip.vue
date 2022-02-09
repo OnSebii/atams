@@ -1,7 +1,8 @@
 <template>
   <div class="text-center">
     <h3>Start a new trip</h3>
-    <v-btn class="ma-2" color="#A3C3D9">start</v-btn>
+    <v-btn class="ma-2" color="#A3C3D9" @click="startTracking">start</v-btn>
+    <v-btn>Stop</v-btn>
   </div>
 </template>
 
@@ -12,17 +13,17 @@ export default {
     return {};
   },
   props: {},
-  created() {
-    this.$getLocation({
-      enableHighAccuracy: false, //defaults to false
-      timeout: Infinity, //defaults to Infinity
-      maximumAge: 0, //defaults to 0
-    }).then((coordinates) => {
-      console.log(coordinates);
-    });
-  },
+  created() {},
   methods: {
-    getLocation() {},
+    startTracking() {
+      navigator.geolocation.getCurrentPosition(this.getLocation);
+      navigator.geolocation.watchPosition(this.getLocation);
+    },
+    stopTracking() {},
+    getLocation(position) {
+      console.log(position.coords.latitude);
+      console.log(position.coords.longitude);
+    },
   },
 };
 </script>
