@@ -1,9 +1,12 @@
 <template>
-  <div class="text-center container">
-    <h3>Start a new trip</h3>
-    <v-btn class="ma-2" color="#A3C3D9" @click="startTracking" :disabled="isDisabled">start</v-btn>
-    <v-btn @click="stopTracking" :disabled="!isDisabled">stop</v-btn>
-
+  <div class="container">
+    <div class="text-center">
+      <h3>Start a new trip</h3>
+      <NewTripForm></NewTripForm>
+      <v-btn class="ma-2" color="#A3C3D9" @click="startTracking" :disabled="isDisabled">start</v-btn>
+      <v-btn @click="stopTracking" :disabled="!isDisabled">stop</v-btn>
+    </div>
+    <h4>GPS calls:</h4>
     <v-data-table :headers="headers" :items="gpsData" :items-per-page="10"></v-data-table>
     <p>Traveled Distance: {{ traveledDistance }} km</p>
   </div>
@@ -11,6 +14,7 @@
 
 <script>
 import { getDistance } from '@/libraries/distance.js';
+import NewTripForm from '@/components/NewTripForm.vue';
 export default {
   name: 'NewTrip',
   data() {
@@ -20,6 +24,7 @@ export default {
         { text: 'Latitude', value: 'lat', sortable: false },
         { text: 'Longitude', value: 'lon', sortable: false },
       ],
+      dialog: false,
       number: 0,
       isDisabled: false,
       gpsData: [],
@@ -61,6 +66,9 @@ export default {
       alert('Please enable geolocation to use this feature.');
       this.isDisabled = false;
     },
+  },
+  components: {
+    NewTripForm,
   },
 };
 </script>
