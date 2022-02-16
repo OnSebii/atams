@@ -7,6 +7,7 @@ if (typeof Number.prototype.toRad === 'undefined') {
 
 exports.getDistance = function (start, end, decimals) {
   decimals = decimals || 2;
+  // var earthRadius = 6371000; // km
   var earthRadius = 6371; // km
   var lat1 = parseFloat(start.lat);
   var lat2 = parseFloat(end.lat);
