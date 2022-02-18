@@ -7,7 +7,7 @@
       <v-btn @click="stopTracking" :disabled="!isDisabled">stop</v-btn>
     </div>
     <h4>GPS calls:</h4>
-    <v-data-table :headers="headers" :items="gpsData" :items-per-page="10"></v-data-table>
+    <v-data-table :headers="headers" :items="gpsData" :items-per-page="6" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc"></v-data-table>
     <p>Traveled Distance: {{ traveledDistance }} km</p>
   </div>
 </template>
@@ -24,6 +24,8 @@ export default {
         { text: 'Latitude', value: 'lat', sortable: false },
         { text: 'Longitude', value: 'lon', sortable: false },
       ],
+      sortBy: 'nr',
+      sortDesc: true,
       dialog: false,
       number: 0,
       isDisabled: false,
@@ -60,6 +62,7 @@ export default {
         console.log('Gerade Zahl');
         this.lastTwoCalls[1] = { lat: position.coords.latitude, lon: position.coords.longitude };
         this.traveledDistance += getDistance(this.lastTwoCalls[0], this.lastTwoCalls[1], 2);
+        console.log('Distance: ', this.traveledDistance);
       }
     },
     geoError() {

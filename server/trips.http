@@ -1,0 +1,10 @@
+get http://127.0.0.1:3000/trips
+###
+delete http://127.0.0.1:3000/trip?id=9
+###
+post http://127.0.0.1:3000/trip
+Content-Type: application/json
+
+{
+    
+}
