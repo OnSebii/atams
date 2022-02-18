@@ -1,4 +1,0 @@
-Tabelle: trips:
-id (pk)
-name string
-distance number
