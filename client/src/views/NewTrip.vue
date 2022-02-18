@@ -2,8 +2,8 @@
   <div class="container">
     <div class="text-center">
       <h3>Start a new trip</h3>
-      <NewTripForm></NewTripForm>
-      <v-btn class="ma-2" color="#A3C3D9" @click="startTracking" :disabled="isDisabled">start</v-btn>
+      <NewTripForm @start="startTracking" :disabled="isDisabled"></NewTripForm>
+      <v-btn class="ma-2" color="#A3C3D9" @click="startTracking" :disabled="true">start</v-btn>
       <v-btn @click="stopTracking" :disabled="!isDisabled">stop</v-btn>
     </div>
     <h4>GPS calls:</h4>
@@ -15,6 +15,7 @@
 <script>
 import { getDistance } from '@/libraries/distance.js';
 import NewTripForm from '@/components/NewTripForm.vue';
+import axios from 'axios';
 export default {
   name: 'NewTrip',
   data() {
@@ -31,6 +32,8 @@ export default {
       isDisabled: false,
       gpsData: [],
       geoWatch: null,
+      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10),
+      tripName: '',
       traveledDistance: 0,
       lastTwoCalls: [{}, {}],
     };
@@ -38,19 +41,33 @@ export default {
   props: {},
   created() {},
   methods: {
-    startTracking() {
+    startTracking(value) {
+      console.log(value);
+      this.tripName = value;
       // navigator.geolocation.getCurrentPosition(this.getLocation);
       this.geoWatch = navigator.geolocation.watchPosition(this.getLocation, this.geoError, { enableHighAccuracy: true });
       this.isDisabled = true;
     },
-    stopTracking() {
+    async stopTracking() {
       navigator.geolocation.clearWatch(this.geoWatch);
       this.isDisabled = false;
+
+      await axios({
+        url: `${process.env.VUE_APP_SERVER}/kennzeichen`,
+        method: 'post',
+        contentType: 'application/json',
+        data: {
+          name: this.tripName,
+          gpscalls: this.gpsCalls,
+          distance: this.traveledDistance,
+          date: this.date,
+        },
+      });
     },
     getLocation(position) {
       console.log(position.coords.latitude);
       console.log(position.coords.longitude);
-      this.number += 1;
+      this.gpsCalls += 1;
       this.gpsData.push({ nr: this.number, lat: position.coords.latitude, lon: position.coords.longitude });
 
       if (this.number % 2 != 0) {
