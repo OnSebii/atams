@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { getDistance } from '@/libraries/distance.js';
+import { getDistance } from '@/libraries/distance2.js';
 import NewTripForm from '@/components/NewTripForm.vue';
 import axios from 'axios';
 export default {
@@ -28,7 +28,7 @@ export default {
       sortBy: 'nr',
       sortDesc: true,
       dialog: false,
-      number: 0,
+      gpsCalls: 0,
       isDisabled: false,
       gpsData: [],
       geoWatch: null,
@@ -68,9 +68,9 @@ export default {
       console.log(position.coords.latitude);
       console.log(position.coords.longitude);
       this.gpsCalls += 1;
-      this.gpsData.push({ nr: this.number, lat: position.coords.latitude, lon: position.coords.longitude });
+      this.gpsData.push({ nr: this.gpsCalls, lat: position.coords.latitude, lon: position.coords.longitude });
 
-      if (this.number % 2 != 0) {
+      if (this.gpsCalls % 2 != 0) {
         // Ungerade
         console.log('Ungerade Zahl');
         this.lastTwoCalls[0] = { lat: position.coords.latitude, lon: position.coords.longitude };
@@ -78,7 +78,8 @@ export default {
         // Gerade
         console.log('Gerade Zahl');
         this.lastTwoCalls[1] = { lat: position.coords.latitude, lon: position.coords.longitude };
-        this.traveledDistance += getDistance(this.lastTwoCalls[0], this.lastTwoCalls[1], 2);
+        // this.traveledDistance += getDistance(this.lastTwoCalls[0], this.lastTwoCalls[1], 2);
+        this.traveledDistance += getDistance(this.lastTwoCalls[0], this.lastTwoCalls[1], 'K');
         console.log('Distance: ', this.traveledDistance);
       }
     },
