@@ -3,7 +3,9 @@ import App from './App.vue';
 import './registerServiceWorker';
 import router from './router';
 import vuetify from './plugins/vuetify';
+
 import VueTypedJs from 'vue-typed-js';
+import VueMoment from 'vue-moment';
 
 Vue.config.productionTip = false;
 
@@ -14,3 +16,4 @@ new Vue({
 }).$mount('#app');
 
 Vue.use(VueTypedJs);
+Vue.use(VueMoment);

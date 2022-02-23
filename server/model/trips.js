@@ -6,7 +6,7 @@ const getTrips = async () => {
 };
 
 const addTrip = async (body) => {
-  const { rows } = await db.query('insert into trips (name, gpscalls, distance, date) values ($1, $2, $3, $4) returning id', []);
+  const { rows } = await db.query('insert into trips (name, gpscalls, distance, date) values ($1, $2, $3, $4) returning id', [body.name, body.gpscalls, body.distance, body.date]);
   return rows;
 };
 

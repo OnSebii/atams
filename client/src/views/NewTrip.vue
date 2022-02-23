@@ -2,9 +2,8 @@
   <div class="container">
     <div class="text-center">
       <h3>Start a new trip</h3>
-      <NewTripForm @start="startTracking" :disabled="isDisabled"></NewTripForm>
-      <v-btn class="ma-2" color="#A3C3D9" @click="startTracking" :disabled="true">start</v-btn>
-      <v-btn @click="stopTracking" :disabled="!isDisabled">stop</v-btn>
+      <NewTripForm class="d-inline" @start="startTracking" :disabled="isDisabled"></NewTripForm>
+      <v-btn class="ma-2" @click="stopTracking" :disabled="!isDisabled">stop</v-btn>
     </div>
     <h4>GPS calls:</h4>
     <v-data-table :headers="headers" :items="gpsData" :items-per-page="6" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc"></v-data-table>
@@ -52,8 +51,8 @@ export default {
       navigator.geolocation.clearWatch(this.geoWatch);
       this.isDisabled = false;
 
-      await axios({
-        url: `${process.env.VUE_APP_SERVER}/kennzeichen`,
+      const data = await axios({
+        url: `${process.env.VUE_APP_SERVER}/trip`,
         method: 'post',
         contentType: 'application/json',
         data: {
@@ -63,6 +62,7 @@ export default {
           date: this.date,
         },
       });
+      console.log(data);
     },
     getLocation(position) {
       console.log(position.coords.latitude);
