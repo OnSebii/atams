@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <v-data-table :headers="headers" :items="items" class="elevation-1">
-          <template v-slot:item.distance="{ item }">
+      <template v-slot:item.distance="{ item }">
         <p>{{ item.distance }} km</p>
       </template>
       <template v-slot:item.date="{ item }">
@@ -12,6 +12,8 @@
 </template>
 <script>
 import axios from 'axios';
+import { openDB } from 'idb';
+
 export default {
   name: 'Trips',
 
@@ -29,21 +31,72 @@ export default {
       { text: 'Date', value: 'date' },
     ],
     items: [],
+    db: null,
+    offline: null,
+    storedTrips: [],
   }),
   computed: {},
   watch: {},
   created() {
-    this.getData();
+    window.addEventListener('online', () => {
+      this.offline = false;
+      // TODO: SyncStore
+      // this.syncStore();
+    });
+    window.addEventListener('offline', () => (this.offline = true));
+    if (!this.db) this.openDB();
   },
   methods: {
-    async getData() {
+    async openDB() {
+      this.db = await openDB('atamsDB', 1, {
+        upgrade(db) {
+          const objectStore = db.createObjectStore('trips', { keyPath: 'id' });
+          objectStore.createIndex('name', 'name', { unique: false });
+        },
+      });
+      this.fetchData();
+    },
+
+    async getStoredTrips() {
+      this.storedTrips = await this.db.getAll('trips');
+    },
+
+    // async syncStore() {
+    //   const trips = await this.db.getAll('trips');
+    //   const employeesForDelete = employees.filter((el) => el.isDeleted == true);
+    //   console.log(employeesForDelete);
+    //   employeesForDelete.forEach((el) => {
+    //     this.delEmployeeOn(el);
+    //   });
+    // },
+
+    fetchData() {
+      console.log('fetchData called');
+      if (this.offline) this.getDataOff();
+      else this.getDataOn();
+    },
+
+    async getDataOn() {
       const { data } = await axios({
         url: `${process.env.VUE_APP_SERVER}/trips`,
         method: 'get',
       });
       console.log(data.data);
-      this.items = data.data;
+      this.items = data.data.map((el) => ({ ...el, isDeleted: false }));
+
+      console.log(this.items);
+      const tx = this.db.transaction('trips', 'readwrite');
+      tx.objectStore('trips').clear();
+      await tx.done;
+      for (let trip of this.items) {
+        await this.db.put('trips', trip);
+      }
     },
+  },
+
+  async getDataOff() {
+    const trips = await this.db.getAll('trips');
+    this.trips = trips.filter((el) => el.isDeleted == false);
   },
 };
 </script>

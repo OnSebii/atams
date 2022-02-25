@@ -11,6 +11,7 @@
     </v-app-bar>
 
     <v-main>
+      <v-alert text prominent type="error" icon="mdi-cloud-alert" v-if="offline"> You are currently offline! </v-alert>
       <router-view />
     </v-main>
 
@@ -35,6 +36,8 @@ export default {
     window.addEventListener('online', () => (this.offline = false));
     window.addEventListener('offline', () => (this.offline = true));
     document.addEventListener('swUpdated', this.updateAvailable, { once: true });
+
+    if (!window.indexedDB) alert('IndexedDB is not available!');
   },
   methods: {
     updateAvailable() {
