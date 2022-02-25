@@ -1,6 +1,7 @@
 <template>
   <div class="text-center">
     <h1>ATAMS</h1>
+    <h3></h3>
   </div>
 </template>
 
