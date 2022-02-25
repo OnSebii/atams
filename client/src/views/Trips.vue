@@ -61,14 +61,14 @@ export default {
       this.storedTrips = await this.db.getAll('trips');
     },
 
-    // async syncStore() {
-    //   const trips = await this.db.getAll('trips');
-    //   const employeesForDelete = employees.filter((el) => el.isDeleted == true);
-    //   console.log(employeesForDelete);
-    //   employeesForDelete.forEach((el) => {
-    //     this.delEmployeeOn(el);
-    //   });
-    // },
+    async syncStore() {
+      const trips = await this.db.getAll('trips');
+      const tripsToDelete = trips.filter((el) => el.isDeleted == true);
+      console.log(tripsToDelete);
+      tripsToDelete.forEach((el) => {
+        this.delTripOn(el);
+      });
+    },
 
     fetchData() {
       console.log('fetchData called');
@@ -97,6 +97,31 @@ export default {
   async getDataOff() {
     const trips = await this.db.getAll('trips');
     this.trips = trips.filter((el) => el.isDeleted == false);
+  },
+
+  delTrip(e) {
+    console.log('delTrip called');
+    if (this.offline) this.delTripOff(e);
+    else this.delTripOn(e);
+    this.fetchData();
+  },
+
+  async delTripOff(e) {
+    let trip = await this.db.get('trips', Number(e.id));
+    trip.isDeleted = true;
+    this.db.put('trips', trip);
+    this.fetchData();
+  },
+
+  async delTripOn(e) {
+    try {
+      await axios({
+        url: `${process.env.VUE_APP_SERVER}/trip/${e.id}`,
+        method: 'delete',
+      });
+    } catch (error) {
+      console.error(error);
+    }
   },
 };
 </script>
