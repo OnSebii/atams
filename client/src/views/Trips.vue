@@ -9,11 +9,10 @@
       </template>
       <template v-slot:item.edit="{ item }">
         <v-btn icon color="pink" @click="delTrip(item)">
-          <v-icon>mdi-heart</v-icon>
+          <v-icon>mdi-delete</v-icon>
         </v-btn>
-        <v-btn tile color="success">
+        <v-btn icon color="blue">
           <v-icon left> mdi-pencil </v-icon>
-          Edit
         </v-btn>
       </template>
     </v-data-table>
@@ -46,14 +45,24 @@ export default {
     storedTrips: [],
   }),
   computed: {},
-  watch: {},
+  watch: {
+    offline: function (newValue, oldValue) {
+      console.log(newValue, oldValue);
+      if (newValue == false) {
+        this.syncTrips();
+      }
+    },
+  },
+  props: {
+    offline: { value: String },
+  },
   created() {
-    window.addEventListener('online', () => {
-      this.offline = false;
-      // TODO: SyncStore
-      // this.syncStore();
-    });
-    window.addEventListener('offline', () => (this.offline = true));
+    // window.addEventListener('online', () => {
+    //   this.offline = false;
+    //   // TODO: SyncStore
+    //   // this.syncStore();
+    // });
+    // window.addEventListener('offline', () => (this.offline = true));
     if (!this.db) this.openDB();
   },
   methods: {
@@ -71,7 +80,7 @@ export default {
       this.storedTrips = await this.db.getAll('trips');
     },
 
-    async syncStore() {
+    async syncTrips() {
       const trips = await this.db.getAll('trips');
       const tripsToDelete = trips.filter((el) => el.isDeleted == true);
       console.log(tripsToDelete);
@@ -82,6 +91,7 @@ export default {
 
     fetchData() {
       console.log('fetchData called');
+      console.log(this.offline);
       if (this.offline) this.getDataOff();
       else this.getDataOn();
     },
@@ -102,36 +112,37 @@ export default {
         await this.db.put('trips', trip);
       }
     },
-  },
 
-  async getDataOff() {
-    const trips = await this.db.getAll('trips');
-    this.trips = trips.filter((el) => el.isDeleted == false);
-  },
+    async getDataOff() {
+      const trips = await this.db.getAll('trips');
+      this.items = trips.filter((el) => el.isDeleted == false);
+    },
 
-  delTrip(e) {
-    console.log('delTrip called');
-    if (this.offline) this.delTripOff(e);
-    else this.delTripOn(e);
-    this.fetchData();
-  },
+    async delTrip(e) {
+      console.log('delTrip called');
+      if (this.offline) await this.delTripOff(e);
+      else await this.delTripOn(e);
+      await this.fetchData();
+    },
 
-  async delTripOff(e) {
-    let trip = await this.db.get('trips', Number(e.id));
-    trip.isDeleted = true;
-    this.db.put('trips', trip);
-    this.fetchData();
-  },
+    async delTripOff(e) {
+      let trip = await this.db.get('trips', Number(e.id));
+      trip.isDeleted = true;
+      this.db.put('trips', trip);
+      this.fetchData();
+    },
 
-  async delTripOn(e) {
-    try {
-      await axios({
-        url: `${process.env.VUE_APP_SERVER}/trip/${e.id}`,
-        method: 'delete',
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    async delTripOn(e) {
+      console.log(e);
+      try {
+        await axios({
+          url: `${process.env.VUE_APP_SERVER}/trip/${e.id}`,
+          method: 'delete',
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
 };
 </script>

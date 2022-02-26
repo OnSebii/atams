@@ -12,7 +12,7 @@
 
     <v-main>
       <v-alert text prominent type="error" icon="mdi-cloud-alert" v-if="offline"> You are currently offline! </v-alert>
-      <router-view />
+      <router-view :offline="offline" />
     </v-main>
 
     <v-footer color="#E9ECF5" padless>
