@@ -7,6 +7,15 @@
       <template v-slot:item.date="{ item }">
         <p>{{ item.date | moment('d.M.YYYY') }}</p>
       </template>
+      <template v-slot:item.edit="{ item }">
+        <v-btn icon color="pink" @click="delTrip(item)">
+          <v-icon>mdi-heart</v-icon>
+        </v-btn>
+        <v-btn tile color="success">
+          <v-icon left> mdi-pencil </v-icon>
+          Edit
+        </v-btn>
+      </template>
     </v-data-table>
   </div>
 </template>
@@ -29,6 +38,7 @@ export default {
       { text: 'GPS Calls', value: 'gpscalls' },
       { text: 'Distance traveled', value: 'distance' },
       { text: 'Date', value: 'date' },
+      { text: 'Edit', value: 'edit', sortable: false },
     ],
     items: [],
     db: null,
