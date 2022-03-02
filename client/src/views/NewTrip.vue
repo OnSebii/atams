@@ -62,6 +62,12 @@ export default {
           date: this.date,
         },
       });
+
+      this.gpsData = [];
+      this.gpsCalls = 0;
+      this.lastTwoCalls = [{}, {}];
+      this.tripName = '';
+      this.traveledDistance = 0;
       console.log(data);
     },
     getLocation(position) {
