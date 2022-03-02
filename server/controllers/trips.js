@@ -18,8 +18,15 @@ const deleteTrip = asyncHandler(async (req, res) => {
   return res.status(200).json({ code: 200, data: `${name} wurde gelöscht` });
 });
 
+const patchTrip = asyncHandler(async (req, res) => {
+  await model.patchTrip(req.body, req.params.id);
+
+  return res.status(200).json({ code: 200, data: 'Wurde aktualisiert' });
+});
+
 module.exports = {
   getTrips,
   addTrip,
   deleteTrip,
+  patchTrip,
 };

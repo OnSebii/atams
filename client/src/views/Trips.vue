@@ -11,9 +11,7 @@
         <v-btn icon color="pink" @click="delTrip(item)">
           <v-icon>mdi-delete</v-icon>
         </v-btn>
-        <v-btn icon color="blue">
-          <v-icon left> mdi-pencil </v-icon>
-        </v-btn>
+        <EditTrip :item="item" @updatedTrip="updateTrip" class="d-inline"></EditTrip>
       </template>
     </v-data-table>
   </div>
@@ -21,6 +19,8 @@
 <script>
 import axios from 'axios';
 import { openDB } from 'idb';
+
+import EditTrip from '@/components/EditTrip.vue';
 
 export default {
   name: 'Trips',
@@ -57,12 +57,6 @@ export default {
     offline: { value: String },
   },
   created() {
-    // window.addEventListener('online', () => {
-    //   this.offline = false;
-    //   // TODO: SyncStore
-    //   // this.syncStore();
-    // });
-    // window.addEventListener('offline', () => (this.offline = true));
     if (!this.db) this.openDB();
   },
   methods: {
@@ -83,11 +77,17 @@ export default {
     async syncTrips() {
       const trips = await this.db.getAll('trips');
       const tripsToDelete = trips.filter((el) => el.isDeleted == true);
-      console.log(tripsToDelete);
+      const tripsToUpdate = trips.filter((el) => el.isUpdated == true);
+      console.log(tripsToDelete, tripsToUpdate);
       tripsToDelete.forEach((el) => {
         this.delTripOn(el);
       });
+      tripsToUpdate.forEach((el) => {
+        this.updateTripOn(el);
+      });
     },
+
+    // Get Data
 
     fetchData() {
       console.log('fetchData called');
@@ -118,6 +118,8 @@ export default {
       this.items = trips.filter((el) => el.isDeleted == false);
     },
 
+    // Delete Trip
+
     async delTrip(e) {
       console.log('delTrip called');
       if (this.offline) await this.delTripOff(e);
@@ -143,6 +145,41 @@ export default {
         console.error(error);
       }
     },
+
+    // Update Trip
+
+    async updateTrip(e) {
+      console.log('updateTrip called');
+      if (this.offline) await this.updateTripOff(e);
+      else await this.updateTripOn(e);
+      await this.fetchData();
+    },
+
+    async updateTripOff(e) {
+      await this.db.delete('trips', Number(e.id));
+      let newTrip = e;
+      newTrip.isUpdated = true;
+      await this.db.put('trips', newTrip);
+    },
+
+    async updateTripOn(e) {
+      try {
+        await axios({
+          url: `${process.env.VUE_APP_SERVER}/trip/${e.id}`,
+          method: 'patch',
+          contentType: 'application/json',
+          data: {
+            name: e.name,
+          },
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
+
+  components: {
+    EditTrip,
   },
 };
 </script>

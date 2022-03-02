@@ -15,4 +15,15 @@ const deleteTrip = async (id) => {
   return rows;
 };
 
-module.exports = { getTrips, deleteTrip, addTrip };
+const patchTrip = async (body, id) => {
+  const { rows } = await db.query('select id from trips where id = $1', [id]);
+
+  let upd = [];
+  for (key in body) upd.push(`${key} = '${body[key]}'`);
+  const cmd = 'UPDATE trips SET ' + upd.join(', ') + ' where id = $1';
+  await db.query(cmd, [rows[0].id]);
+
+  return '';
+};
+
+module.exports = { getTrips, deleteTrip, addTrip, patchTrip };
