@@ -7,8 +7,8 @@
 
 5 Website Storage: Session-Store							x
 10 Website Storage: Index DB								y
-10 Pro Offline CUD Operation implementiert (siehe Arbeitsblatt)				
-10 Einbindung von Outputs (Vibration, Text-2-Speech)					
+10 Pro Offline CUD Operation implementiert (siehe Arbeitsblatt)				y
+10 Einbindung von Outputs (Vibration, Text-2-Speech)					y
 5 PWA Feature: Background Local Notification						
 5 PWA Feature: Background Push Messages (Server Push 2 Client)				
 

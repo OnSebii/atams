@@ -5,9 +5,9 @@
         <v-img alt="atams name" class="shrink mt-1 hidden-sm-and-down" contain min-width="100" src="@/assets/logo.png" width="100" />
       </div>
       <v-spacer></v-spacer>
-      <v-btn class="ma-2" outlined color="#A3C3D9" to="/"> Home </v-btn>
-      <v-btn class="ma-2" outlined color="#A3C3D9" to="/newtrip"> New trip </v-btn>
-      <v-btn class="ma-2" outlined color="#A3C3D9" to="/trips"> Trips </v-btn>
+      <v-btn class="ma-2" outlined color="#A3C3D9" to="/" @click="vibrate"> Home </v-btn>
+      <v-btn class="ma-2" outlined color="#A3C3D9" to="/newtrip" @click="vibrate"> New trip </v-btn>
+      <v-btn class="ma-2" outlined color="#A3C3D9" to="/trips" @click="vibrate"> Trips </v-btn>
     </v-app-bar>
 
     <v-main>
@@ -44,6 +44,9 @@ export default {
       if (confirm(`New content is available!. Click OK to refresh`)) {
         window.location.reload();
       }
+    },
+    vibrate() {
+      navigator.vibrate(200);
     },
   },
 };
