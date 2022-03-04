@@ -1,4 +1,4 @@
-importScripts("/precache-manifest.96b1374c27e4191caebb0b5664af3549.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+importScripts("/precache-manifest.2fa4898d863dbd3df4ba5f455ff3d8a3.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 /* global workbox */
 
@@ -25,6 +25,13 @@ if (workbox) {
       cacheName: 'atams-image-cache',
     })
   );
+  self.addEventListener('push', (event) => {
+    const data = event.data.json();
+    self.registration.showNotification(data.title, {
+      body: data.body.message,
+      // icon: 'img/icons/employees_192x192.png',
+    });
+  });
 } else {
   console.log(`Workbox didn't load`);
 }
