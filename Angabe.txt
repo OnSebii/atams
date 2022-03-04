@@ -10,7 +10,7 @@
 10 Pro Offline CUD Operation implementiert (siehe Arbeitsblatt)				y
 10 Einbindung von Outputs (Vibration, Text-2-Speech)					y
 5 PWA Feature: Background Local Notification						
-5 PWA Feature: Background Push Messages (Server Push 2 Client)				
+5 PWA Feature: Background Push Messages (Server Push 2 Client)				y	
 
 10 REST Server										y
 5 REST Server: DB Anbindung								y

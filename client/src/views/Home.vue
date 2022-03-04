@@ -23,7 +23,7 @@ export default {
         console.log('no service worker!');
         return;
       }
-      const publicVapidKey = 'BFoQVCmIpgcwp9awaJstGe0fz8ahxcaKkPI8qHSuQq5wsP6RdcVLA9ANZBCi-os25dVUTKopKs6gphkbiiq9ilY';
+      const publicVapidKey = 'BJ6qtn_ILf88QQNhTaUfnaocNRDoEvIEJohHT7659XvDS8Y99Ik0HVPJ1rNw60oqco2cPlntwdc-JwjxCXvdWMc';
       const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
