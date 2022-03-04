@@ -23,13 +23,13 @@ export default {
         console.log('no service worker!');
         return;
       }
-      const publicVapidKey = 'BJ6qtn_ILf88QQNhTaUfnaocNRDoEvIEJohHT7659XvDS8Y99Ik0HVPJ1rNw60oqco2cPlntwdc-JwjxCXvdWMc';
+      const publicVapidKey = 'BKRdIZ5jBe5fYXKjJ91UJHcqbNmbe4fpLv6jxop0POQ3weDbrtWRR-AjGkptXABn1Nrjf4hV3h3khNqnlxHUkag';
       const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: this.urlBase64ToUint8Array(publicVapidKey),
       });
-      await axios.post('/subscribe', subscription);
+      await axios.post(`${process.env.VUE_APP_SERVER}/subscribe`, subscription);
     },
     urlBase64ToUint8Array(base64String) {
       const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
