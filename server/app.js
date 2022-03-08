@@ -7,6 +7,14 @@ const trips = require('./routes/trips');
 
 const { notFound, errorHandler } = require('./middleware/errorHandler');
 
+const corsOpts = {
+  origin: '*',
+
+  methods: ['GET', 'POST'],
+
+  allowedHeaders: ['Content-Type'],
+};
+
 require('colors');
 require('dotenv').config();
 
@@ -16,7 +24,7 @@ app.use(morgan('dev'));
 
 // app.use(helmet());
 
-app.use(cors());
+app.use(cors(corsOpts));
 
 app.use(express.static(path.join(__dirname, '/public')));
 

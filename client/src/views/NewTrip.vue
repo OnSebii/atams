@@ -38,12 +38,26 @@ export default {
     };
   },
   props: {},
-  created() {},
+  created() {
+    if (window.navigator.geolocation) {
+      window.navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.log(position.coords);
+        },
+        (e) => {
+          console.log(e);
+        }
+      );
+    } else {
+      alert('navigator not supported');
+    }
+  },
   methods: {
     startTracking(value) {
       console.log(value);
       this.tripName = value;
       // navigator.geolocation.getCurrentPosition(this.getLocation);
+
       this.geoWatch = navigator.geolocation.watchPosition(this.getLocation, this.geoError, { enableHighAccuracy: true });
       this.isDisabled = true;
     },
