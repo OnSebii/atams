@@ -4,3 +4,10 @@ Content-Type: application/json
 {
     "message": "Hello, this is a test message!"
 }
+####
+post https://baily.at/notify
+Content-Type: application/json
+
+{
+    "message": "Hello, this is a test message!"
+}

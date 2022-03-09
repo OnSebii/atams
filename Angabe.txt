@@ -1,18 +1,18 @@
 5 Eigenes Logo (in verschiedenen Auflösungen und richtig in manifest.json aufgelistet)	y
-5 Eigenes Farbschema (manifest.json)             					y
-5 Workbox integration (Caching für statische Inhalte)					y
-5 Update Funktionalität (siehe Arbeitsblatt)						y
-10 Responsive Design (mind.: Portrait, Landscape)					y
-10 Workbox für REST Service Calls (GET) konfiguriert (offline Read)			y
+5 Eigenes Farbschema (manifest.json)             								y
+5 Workbox integration (Caching für statische Inhalte)							y
+5 Update Funktionalität (siehe Arbeitsblatt)									y
+10 Responsive Design (mind.: Portrait, Landscape)								y
+10 Workbox für REST Service Calls (GET) konfiguriert (offline Read)					y
 
-5 Website Storage: Session-Store							x
-10 Website Storage: Index DB								y
-10 Pro Offline CUD Operation implementiert (siehe Arbeitsblatt)				y
-10 Einbindung von Outputs (Vibration, Text-2-Speech)					y
+5 Website Storage: Session-Store												x
+10 Website Storage: Index DB													y
+10 Pro Offline CUD Operation implementiert (siehe Arbeitsblatt)					y
+10 Einbindung von Outputs (Vibration, Text-2-Speech)								y
 5 PWA Feature: Background Local Notification						
-5 PWA Feature: Background Push Messages (Server Push 2 Client)				y	
+5 PWA Feature: Background Push Messages (Server Push 2 Client)						y	
 
-10 REST Server										y
-5 REST Server: DB Anbindung								y
+10 REST Server																y
+5 REST Server: DB Anbindung													y
 
 60 + 40 + 30 + 15
